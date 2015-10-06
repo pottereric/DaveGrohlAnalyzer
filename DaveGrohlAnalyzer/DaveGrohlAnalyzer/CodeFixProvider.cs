@@ -18,6 +18,8 @@ namespace DaveGrohlAnalyzer
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(DaveGrohlAnalyzerCodeFixProvider)), Shared]
     public class DaveGrohlAnalyzerCodeFixProvider : CodeFixProvider
     {
+        private const string title = "Give it a better name";
+
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
             get { return ImmutableArray.Create(DaveGrohlAnalyzerAnalyzer.DiagnosticId); }
@@ -41,16 +43,20 @@ namespace DaveGrohlAnalyzer
 
             // Register a code action that will invoke the fix.
             context.RegisterCodeFix(
-                CodeAction.Create("Give it a better name", c => GiveBetterName(context.Document, declaration, c)),
+                CodeAction.Create(
+                    title: title,
+                    createChangedSolution: c => MakeUppercaseAsync(context.Document, declaration, c),
+                    equivalenceKey: title),
                 diagnostic);
         }
 
-        private async Task<Solution> GiveBetterName(Document document, MethodDeclarationSyntax typeDecl, CancellationToken cancellationToken)
+        private async Task<Solution> MakeUppercaseAsync(Document document, MethodDeclarationSyntax typeDecl, CancellationToken cancellationToken)
         {
             // Compute new uppercase name.
             var identifierToken = typeDecl.Identifier;
             //var newName = identifierToken.Text.ToUpperInvariant();
             var newName = "Fannydorf Janglechink";
+
 
             // Get the symbol representing the type to be renamed.
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken);

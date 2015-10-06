@@ -16,18 +16,43 @@ namespace DaveGrohlAnalyzer
         public const string DiagnosticId = "DaveGrohlAnalyzer";
 
         internal const string Title = "Fight the foo.";
-        internal const string MessageFormat = "Hey dummy, don't use foo as a variable name.";
+        internal const string MessageFormat = "Hey dummy 222, don't use foo as a variable name.";
         internal const string Category = "Naming";
         internal const string Description = "Find lazy method names";
 
-        internal static DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
+
+        private static DiagnosticDescriptor Rule 
+            = new DiagnosticDescriptor(
+                DiagnosticId, 
+                Title, 
+                MessageFormat, 
+                Category, 
+                DiagnosticSeverity.Warning, 
+                isEnabledByDefault: true, 
+                description: Description);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(Rule); } }
 
         public override void Initialize(AnalysisContext context)
         {
+            // TODO: Consider registering other actions that act on syntax instead of or in addition to symbols
             context.RegisterSymbolAction(AnalyzeMethod, SymbolKind.Method);
         }
+
+        //private static void AnalyzeSymbol(SymbolAnalysisContext context)
+        //{
+        //    // TODO: Replace the following code with your own analysis, generating Diagnostic objects for any issues you find
+        //    var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
+
+        //    // Find just those named type symbols with names containing lowercase letters.
+        //    if (namedTypeSymbol.Name.ToCharArray().Any(char.IsLower))
+        //    {
+        //        // For all such symbols, produce a diagnostic.
+        //        var diagnostic = Diagnostic.Create(Rule, namedTypeSymbol.Locations[0], namedTypeSymbol.Name);
+
+        //        context.ReportDiagnostic(diagnostic);
+        //    }
+        //}
 
         private static void AnalyzeMethod(SymbolAnalysisContext context)
         {
@@ -42,5 +67,6 @@ namespace DaveGrohlAnalyzer
                 context.ReportDiagnostic(diagnostic);
             }
         }
+
     }
 }

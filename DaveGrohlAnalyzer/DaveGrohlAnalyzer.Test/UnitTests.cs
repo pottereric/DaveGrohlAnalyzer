@@ -41,7 +41,7 @@ namespace DaveGrohlAnalyzer.Test
     }";
             var expected = new DiagnosticResult
             {
-                Id = DaveGrohlAnalyzerAnalyzer.DiagnosticId,
+                Id = "DaveGrohlAnalyzer",
                 Message = String.Format("Type name '{0}' contains lowercase letters", "TypeName"),
                 Severity = DiagnosticSeverity.Warning,
                 Locations =
